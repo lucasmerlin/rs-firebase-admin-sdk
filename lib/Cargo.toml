@@ -13,6 +13,9 @@ license = "MIT"
 [lib]
 doctest = false
 
+[features]
+token = ["dep:openssl"]
+
 [dependencies]
 tokio = { version = "1.38", features = ["sync"], default-features = false }
 error-stack = "0.5"
@@ -27,7 +30,7 @@ bytes = "1"
 gcp_auth = "0.12"
 time = { version = "0.3", features = ["serde"] }
 base64 = "0.22"
-openssl = "0.10"
+openssl = { version = "0.10", optional = true }
 
 [dev-dependencies]
 tokio = { version = "1.38", features = ["macros", "rt-multi-thread"] }

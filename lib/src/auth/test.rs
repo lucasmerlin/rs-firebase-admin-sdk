@@ -1,5 +1,4 @@
 use super::import::{PasswordHash, UserImportRecord};
-use super::token::jwt::JWToken;
 use super::{
     AttributeOp, Claims, FirebaseAuth, FirebaseAuthService, FirebaseEmulatorAuthService, NewUser,
     OobCode, OobCodeAction, OobCodeActionType, UserIdentifiers, UserList, UserUpdate,
@@ -521,9 +520,11 @@ async fn test_generate_email_action_link() {
     auth.clear_all_users().await.unwrap();
 }
 
+#[cfg(feature = "token")]
 #[tokio::test]
 #[serial]
 async fn test_create_session_cookie() {
+    use super::token::jwt::JWToken;
     let auth = get_auth_service();
 
     auth.create_user(NewUser::email_and_password(

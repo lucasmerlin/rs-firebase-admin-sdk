@@ -4,12 +4,13 @@ pub mod client;
 pub mod credentials;
 pub mod util;
 
+#[cfg(feature = "token")]
+use auth::token::{
+    cache::{HttpCache, PubKeys},
+    error::TokenVerificationError,
+    EmulatedTokenVerifier, LiveTokenVerifier, GOOGLE_COOKIE_PUB_KEY_URI, GOOGLE_PUB_KEY_URI,
+};
 use auth::{
-    token::{
-        cache::{HttpCache, PubKeys},
-        error::TokenVerificationError,
-        EmulatedTokenVerifier, LiveTokenVerifier, GOOGLE_COOKIE_PUB_KEY_URI, GOOGLE_PUB_KEY_URI,
-    },
     FirebaseAuth,
 };
 use client::ReqwestApiClient;
@@ -49,6 +50,7 @@ impl App<EmulatorCredentials> {
     }
 
     /// OIDC token verifier for emulator
+    #[cfg(feature = "token")]
     pub fn id_token_verifier(&self) -> EmulatedTokenVerifier {
         EmulatedTokenVerifier::new(self.project_id.clone())
     }
@@ -83,6 +85,7 @@ impl App<GcpCredentials> {
     }
 
     /// Create OIDC token verifier
+    #[cfg(feature = "token")]
     pub async fn id_token_verifier(
         &self,
     ) -> Result<
@@ -103,6 +106,7 @@ impl App<GcpCredentials> {
     }
 
     /// Create cookie token verifier
+    #[cfg(feature = "token")]
     pub async fn cookie_token_verifier(
         &self,
     ) -> Result<
